@@ -5,7 +5,7 @@ import type { TagType } from "../../types/NoteTag";
 import * as Yup from "yup";
 import type NoteTag from "../../types/NoteTag";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNote } from "../../services/noteService";
+import { createNote } from "@/lib/api/api";
 import toast from "react-hot-toast";
 
 interface OrderFormValue {

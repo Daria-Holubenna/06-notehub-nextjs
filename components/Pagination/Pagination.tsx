@@ -18,11 +18,11 @@ export default function Pagination({
       pageRangeDisplayed={5}
       marginPagesDisplayed={1}
       onPageChange={onPageChange}
-      forcePage={currentPage - 1}
+      forcePage={currentPage}
       containerClassName={css.pagination}
       activeClassName={css.active}
-      nextLabel="→"
-      previousLabel="←"
+      nextLabel="♡→♡"
+      previousLabel="♡←♡"
     />
   );
 }

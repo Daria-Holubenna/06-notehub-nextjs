@@ -1,11 +1,7 @@
-import styles from "./page.module.css";
-import css from './page.module.css';
-
+import css from './Home.module.css';
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-<main>
   <div className={css.container}>
     <h1 className={css.title}>Welcome to NoteHub</h1>
     <p className={css.description}>
@@ -20,11 +16,5 @@ export default function Home() {
       and productivity.
     </p>
   </div>
-</main>
-
-      <footer className={styles.footer}>
-      
-      </footer>
-    </div>
   );
 }

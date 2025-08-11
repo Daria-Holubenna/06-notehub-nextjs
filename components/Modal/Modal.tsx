@@ -1,5 +1,3 @@
-import css from './NoteModal.module.css'
-
 import { createPortal } from "react-dom";
 import css from "./Modal.module.css";
 import { useEffect, type ReactNode } from "react";

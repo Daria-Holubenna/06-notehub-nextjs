@@ -1,13 +1,15 @@
 import css from "./NoteList.module.css";
 import type Note from "../../types/note";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteNote } from "../../services/noteService";
+import { deleteNote } from "@/lib/api/api";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 interface NoteListProps {
   notes: Note[];
 }
 export default function NoteList({ notes }: NoteListProps) {
+  
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({
@@ -17,7 +19,7 @@ export default function NoteList({ notes }: NoteListProps) {
       toast.success("Note successfully deleted!");
     },
     onError: (error) => {
-      console.error("Ошибка удаления:", error);
+      console.error("Ошибка удаленияВашуМашу:", error);
       toast.error(
         "An error occurred while deleting a note. The note was not deleted!"
       );
@@ -32,8 +34,10 @@ export default function NoteList({ notes }: NoteListProps) {
           <p className={css.content}>{note.content}</p>
           <div className={css.footer}>
             <span className={css.tag}>{note.tag}</span>
-            <button
-              className={css.button}
+            <Link href={`/notes/${note.id}`} className={css.link}>
+            View Details
+            </Link>
+            <button className={css.button}
               onClick={() => deleteMutation.mutate(note.id)}
               disabled={deleteMutation.isPending}
             >
