@@ -1,5 +1,5 @@
 'use client';
-export interface ErrorProps {
+ interface ErrorProps {
     error: Error;
 }
 export default function Error ({error}: ErrorProps){

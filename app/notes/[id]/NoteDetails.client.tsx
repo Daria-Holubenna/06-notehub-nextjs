@@ -12,7 +12,8 @@ type Params = {
 
 
 export default function NoteDetailsClient() {
-    const {id} :Params = useParams();
+   const params: Params = useParams();
+const { id } = params;
   const {
     data: note,
     isPending,
@@ -25,9 +26,9 @@ export default function NoteDetailsClient() {
   });
   return (
        <>
-      {isPending && <Loading/>}
-      {(error || !note) && <p>Something went wrong.</p>}
-      {note && (
+      {isPending && <Loading />}
+        {error && !isPending && <p>Something went wrong.</p>}
+      {note && !isPending && !error && (
         <div className={css.container}>
           <div className={css.item}>
             <div className={css.header}>
