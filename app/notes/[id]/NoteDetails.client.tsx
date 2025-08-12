@@ -4,7 +4,6 @@ import { fetchNoteById } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import Loading from '@/app/loading';
-import Error from './error'
 
 type Params = {
   id: string;
@@ -27,7 +26,7 @@ export default function NoteDetailsClient() {
   return (
        <>
       {isPending && <Loading/>}
-      {(error || !note) && <Error error={error} />}
+      {(error || !note) && <p>Something went wrong.</p>}
       {note && (
         <div className={css.container}>
           <div className={css.item}>
