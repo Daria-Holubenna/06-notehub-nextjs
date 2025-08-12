@@ -3,6 +3,8 @@ import css from './NoteDetails.module.css';
 import { fetchNoteById } from '@/lib/api/api';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
+import Loading from '@/app/loading';
+import Error from './error'
 
 type Params = {
   id: string;
@@ -22,11 +24,10 @@ export default function NoteDetailsClient() {
     refetchOnMount: false,
     enabled: !!id,
   });
-    console.log("Отриманий ID:", id);
   return (
        <>
-      {isPending && <p>Loading, please wait...</p>}
-      {(error || !note) && <p>Something went wrong.</p>}
+      {isPending && <Loading/>}
+      {(error || !note) && <Error error={error} />}
       {note && (
         <div className={css.container}>
           <div className={css.item}>

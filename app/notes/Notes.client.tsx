@@ -1,22 +1,21 @@
-"use client";
+'use client';
 
-import css from "./Notes.module.css";
-import Modal from "../../components/Modal/Modal";
-import SearchBox from "../../components/SearchBox/SearchBox";
-import { useState } from "react";
-import NoteList from "../../components/NoteList/NoteList";
-import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { fetchNotes, NoteHttpResp } from "../../lib/api/api";
-import NoteForm from "../../components/NoteForm/NoteForm";
-import { useDebounce } from "use-debounce";
-import Pagination from '../../components/Pagination/Pagination'
+import css from './Notes.module.css';
+import Modal from '../../components/Modal/Modal';
+import SearchBox from '../../components/SearchBox/SearchBox';
+import { useState } from 'react';
+import NoteList from '../../components/NoteList/NoteList';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
+import { fetchNotes } from '../../lib/api/api';
+import NoteForm from '../../components/NoteForm/NoteForm';
+import { useDebounce } from 'use-debounce';
+import Pagination from '../../components/Pagination/Pagination';
+import { Toaster } from 'react-hot-toast';
+import Loading from '../loading';
+import Error from './error';
 
-interface DataProps{
-    initialData: NoteHttpResp;
-}
-
-export default function NotesClient({initialData}:DataProps) {
-  const [search, setSearch] = useState("");
+export default function NotesClient() {
+  const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [debouncedSearch] = useDebounce(search, 500);
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,16 +28,10 @@ export default function NotesClient({initialData}:DataProps) {
   };
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["notes", debouncedSearch, currentPage, itemsPerPage],
-    queryFn: () => {
-      const finalSearchTerm = debouncedSearch === "" ? " " : debouncedSearch;
-      return fetchNotes(finalSearchTerm, currentPage, itemsPerPage);
-    },
+    queryKey: ['notes', debouncedSearch, currentPage, itemsPerPage],
+    queryFn: () => fetchNotes(debouncedSearch, currentPage, itemsPerPage),
     placeholderData: keepPreviousData,
-    initialData: initialData,
-    // enabled: true,
   });
-
   const handlePageClick = (selectedItem: { selected: number }) => {
     setCurrentPage(selectedItem.selected + 1);
   };
@@ -47,11 +40,12 @@ export default function NotesClient({initialData}:DataProps) {
     setSearch(value);
     setCurrentPage(1);
   };
-   const notesToDisplay = data?.notes || [];
+  const notesToDisplay = data?.notes || [];
   const totalPages = data?.totalPages || 0;
 
   return (
     <div className={css.app}>
+      <Toaster />
       <header className={css.toolbar}>
         <SearchBox onSearchChange={handleInputChange} />
 
@@ -73,8 +67,8 @@ export default function NotesClient({initialData}:DataProps) {
           </Modal>
         )}
       </header>
-      {isLoading && <p>Loading notes...</p>}
-      {isError && <p>Error loading notes!</p>}
+      {isLoading && <Loading />}
+      {isError && !isLoading && <Error />}
       {!isLoading &&
         !isError &&
         (notesToDisplay.length > 0 ? (
@@ -85,4 +79,3 @@ export default function NotesClient({initialData}:DataProps) {
     </div>
   );
 }
-

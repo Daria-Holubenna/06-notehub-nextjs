@@ -7,14 +7,12 @@ export interface NoteHttpResp {
   notes: Note[];
   totalPages: number;
 }
-
 export async function fetchNotes(
   search: string,
   page: number = 1,
-  perPage: number = 12,
-  
+  perPage: number = 12
 ): Promise<NoteHttpResp> {
-  const response = await axios.get<NoteHttpResp>(
+  const { data } = await axios.get<NoteHttpResp>(
     'https://notehub-public.goit.study/api/notes',
     {
       params: {
@@ -27,21 +25,20 @@ export async function fetchNotes(
       },
     }
   );
-  return response.data;
+  return data;
 }
-
 export interface CreateNoteResponse {
-    id: number;
-    title: string;
-    content: string;
-    createdAt: string;
-    updatedAt: string;
-    tag: string;
+  id: number;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  tag: string;
 }
 export const createNote = async (
   noteData: NoteTag
 ): Promise<CreateNoteResponse> => {
-  const response = await axios.post<CreateNoteResponse>(
+  const { data } = await axios.post<CreateNoteResponse>(
     'https://notehub-public.goit.study/api/notes',
     noteData,
     {
@@ -50,9 +47,8 @@ export const createNote = async (
       },
     }
   );
-  return response.data;
+  return data;
 };
-
 export interface DeleteNoteResponse {
   id: number;
   title: string;
@@ -62,7 +58,7 @@ export interface DeleteNoteResponse {
 export const deleteNote = async (
   NoteId: number
 ): Promise<DeleteNoteResponse> => {
-  const response = await axios.delete<DeleteNoteResponse>(
+  const { data } = await axios.delete<DeleteNoteResponse>(
     `https://notehub-public.goit.study/api/notes/${NoteId}`,
     {
       headers: {
@@ -70,8 +66,7 @@ export const deleteNote = async (
       },
     }
   );
-
-  return response.data;
+  return data;
 };
 interface NoteResponseById {
   id: number;
@@ -82,7 +77,7 @@ interface NoteResponseById {
 export const fetchNoteById = async (
   NoteId: string
 ): Promise<NoteResponseById> => {
-  const response = await axios.get<NoteResponseById>(
+  const { data } = await axios.get<NoteResponseById>(
     `https://notehub-public.goit.study/api/notes/${NoteId}`,
     {
       headers: {
@@ -90,5 +85,5 @@ export const fetchNoteById = async (
       },
     }
   );
-  return response.data;
+  return data;
 };

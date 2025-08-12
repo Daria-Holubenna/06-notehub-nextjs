@@ -50,7 +50,6 @@ export default function NoteForm({ onCancel }: NoteFormProps) {
     values: OrderFormValue,
     { setSubmitting, resetForm }: FormikHelpers<OrderFormValue>
   ) => {
-    //   console.log("Form submitted:", values);
     createMutation.mutate(values);
     setSubmitting(false);
     resetForm();
