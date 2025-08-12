@@ -13,8 +13,13 @@ import Pagination from '../../components/Pagination/Pagination';
 import { Toaster } from 'react-hot-toast';
 import Loading from '../loading';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
+import { NoteHttpResp } from '../../lib/api';
 
-export default function NotesClient() {
+interface DataProps {
+  initialData: NoteHttpResp;
+}
+
+export default function NotesClient({ initialData }: DataProps) {
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [debouncedSearch] = useDebounce(search, 500);
@@ -31,6 +36,8 @@ export default function NotesClient() {
     queryKey: ['notes', debouncedSearch, currentPage, itemsPerPage],
     queryFn: () => fetchNotes(debouncedSearch, currentPage, itemsPerPage),
     placeholderData: keepPreviousData,
+    initialData: initialData,
+    //  initialDataUpdatedAt: Date.now(),
   });
   const handlePageClick = (selectedItem: { selected: number }) => {
     setCurrentPage(selectedItem.selected + 1);
@@ -68,8 +75,8 @@ export default function NotesClient() {
         )}
       </header>
       {isLoading && <Loading />}
-          {isError && <ErrorMessage />}
-       {isSuccess && 
+      {isError && <ErrorMessage />}
+      {isSuccess &&
         (notesToDisplay.length > 0 ? (
           <NoteList notes={notesToDisplay} />
         ) : (

@@ -1,14 +1,13 @@
 import css from "./NoteForm.module.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import type { FormikHelpers } from "formik";
-import type { TagType } from "../../types/NoteTag";
 import * as Yup from "yup";
-import type NoteTag from "../../types/NoteTag";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNote } from "@/lib/api";
 import toast from "react-hot-toast";
+import { TagType } from "@/lib/api";
 
-interface OrderFormValue {
+interface NoteFormValue {
   title: string;
   content: string;
   tag: TagType;
@@ -32,7 +31,7 @@ export default function NoteForm({ onCancel }: NoteFormProps) {
   const queryClient = useQueryClient();
 
   const createMutation = useMutation({
-    mutationFn: (newNoteData: NoteTag) => createNote(newNoteData),
+    mutationFn: (newNoteData: NoteFormValue) => createNote(newNoteData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notes"] });
       onCancel();
@@ -46,13 +45,18 @@ export default function NoteForm({ onCancel }: NoteFormProps) {
     },
   });
 
-  const handleSubmit = (
-    values: OrderFormValue,
-    { setSubmitting, resetForm }: FormikHelpers<OrderFormValue>
+  const handleSubmit = async (
+    values: NoteFormValue,
+    { setSubmitting, resetForm }: FormikHelpers<NoteFormValue>
   ) => {
-    createMutation.mutate(values);
-    setSubmitting(false);
-    resetForm();
+    createMutation.mutate(values, {
+      onSuccess: () => {
+        resetForm();
+      },
+      onError: () => {
+        setSubmitting(false);
+      }
+    });
   };
 
   return (

@@ -1,7 +1,6 @@
 import axios from 'axios';
 const apiKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 import type Note from '../types/note';
-import type NoteTag from '../types/NoteTag';
 
 export interface NoteHttpResp {
   notes: Note[];
@@ -27,18 +26,14 @@ export async function fetchNotes(
   );
   return data;
 }
-export interface CreateNoteResponse {
-  id: number;
+export interface NoteTag {
   title: string;
   content: string;
-  createdAt: string;
-  updatedAt: string;
-  tag: string;
+  tag: TagType;
 }
-export const createNote = async (
-  noteData: NoteTag
-): Promise<CreateNoteResponse> => {
-  const { data } = await axios.post<CreateNoteResponse>(
+export type TagType = 'Todo' | 'Work' | 'Shopping' | 'Personal' | 'Meeting';
+export const createNote = async (noteData: NoteTag): Promise<Note> => {
+  const { data } = await axios.post<Note>(
     'https://notehub-public.goit.study/api/notes',
     noteData,
     {
@@ -49,16 +44,8 @@ export const createNote = async (
   );
   return data;
 };
-export interface DeleteNoteResponse {
-  id: number;
-  title: string;
-  content: string;
-  tag: string;
-}
-export const deleteNote = async (
-  NoteId: number
-): Promise<DeleteNoteResponse> => {
-  const { data } = await axios.delete<DeleteNoteResponse>(
+export const deleteNote = async (NoteId: string): Promise<Note> => {
+  const { data } = await axios.delete<Note>(
     `https://notehub-public.goit.study/api/notes/${NoteId}`,
     {
       headers: {
@@ -68,16 +55,8 @@ export const deleteNote = async (
   );
   return data;
 };
-interface NoteResponseById {
-  id: number;
-  title: string;
-  content: string;
-  createdAt: string;
-}
-export const fetchNoteById = async (
-  NoteId: string
-): Promise<NoteResponseById> => {
-  const { data } = await axios.get<NoteResponseById>(
+export const fetchNoteById = async (NoteId: string): Promise<Note> => {
+  const { data } = await axios.get<Note>(
     `https://notehub-public.goit.study/api/notes/${NoteId}`,
     {
       headers: {
