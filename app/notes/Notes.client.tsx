@@ -6,7 +6,7 @@ import SearchBox from '../../components/SearchBox/SearchBox';
 import { useState } from 'react';
 import NoteList from '../../components/NoteList/NoteList';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
-import { fetchNotes } from '../../lib/api/api';
+import { fetchNotes } from '../../lib/api';
 import NoteForm from '../../components/NoteForm/NoteForm';
 import { useDebounce } from 'use-debounce';
 import Pagination from '../../components/Pagination/Pagination';

@@ -1,7 +1,7 @@
 import axios from 'axios';
 const apiKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
-import type Note from '../../types/note';
-import type NoteTag from '../../types/NoteTag';
+import type Note from '../types/note';
+import type NoteTag from '../types/NoteTag';
 
 export interface NoteHttpResp {
   notes: Note[];
