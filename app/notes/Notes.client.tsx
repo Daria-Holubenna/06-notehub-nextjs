@@ -12,7 +12,7 @@ import { useDebounce } from 'use-debounce';
 import Pagination from '../../components/Pagination/Pagination';
 import { Toaster } from 'react-hot-toast';
 import Loading from '../loading';
-import Error from './error';
+import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 
 export default function NotesClient() {
   const [search, setSearch] = useState('');
@@ -27,7 +27,7 @@ export default function NotesClient() {
     setCurrentPage(1);
   };
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, isSuccess } = useQuery({
     queryKey: ['notes', debouncedSearch, currentPage, itemsPerPage],
     queryFn: () => fetchNotes(debouncedSearch, currentPage, itemsPerPage),
     placeholderData: keepPreviousData,
@@ -68,9 +68,8 @@ export default function NotesClient() {
         )}
       </header>
       {isLoading && <Loading />}
-      {isError && !isLoading && <Error />}
-      {!isLoading &&
-        !isError &&
+          {isError && <ErrorMessage />}
+       {isSuccess && 
         (notesToDisplay.length > 0 ? (
           <NoteList notes={notesToDisplay} />
         ) : (
